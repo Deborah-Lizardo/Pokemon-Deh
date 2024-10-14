@@ -1,5 +1,4 @@
 import random
-
 # Apresentação do Professor Carvalho e solicitação do nome do jogador
 print("Olá! Bem-vindo ao mundo dos Pokémon!")
 nome = input("Eu sou o Professor Carvalho. Antes de começarmos, qual é o seu nome? ")
@@ -115,81 +114,75 @@ pokeimgMa = ['''⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠉⠁⠀⠀⠀�
 ⣿⣿⣿⣿⣿⣿⣿⣿⣯⣝⡛⠚⣭⣶⣶⣮⣽⣟⣛⢛⡅⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⡤⣿⣿⣿⣿⣿⣿⣿⣯⡁⣿⣿⣿⣿⣿⣿⣿⣿⣿''']
 
-# Loop principal do jogo
+import random
+
 Pokemons_Pokedex = []
 tentativas_extra = 3
+escolha = ""
 
-while True:
-    escolha = input("\nOnde você gostaria de explorar? (caverna/matagal/sair) ").lower()
-    if escolha == "sair":
-        print("Obrigado por jogar! Até a próxima!")
-        break
-    elif escolha == "caverna":
+# Loop principal do jogo
+while escolha != "sair":
+    escolha = input("\nOnde você gostaria de explorar? (caverna/matagal/pokedex/sair) ").lower()
+    print(f"Você tem {tentativas_extra} chances para capturar um Pokémon.")
+
+    if escolha == "caverna":
         print("Você entrou na caverna...")
-        pokemon_dataCa = random.choice(list(zip(pokemonsCa, pokeimgCa)))
+        pokemon_dataCa = random.choice(list(zip(pokemonsCa, pokeimgCa))) if random.randint(1, 10) == 1 else (None, None)
         pokemon, pokemon_img = pokemon_dataCa
-        if pokemon in Pokemons_Pokedex :
-            print("Você já capturou este Pokémon antes!")
-            pokedex = input("Você deseja visualizar seus Pokemóns capturados?").lower()
-            if pokedex == "sim" :
-                print(Pokemons_Pokedex)
-                continue
-            else:
-                continue
-        if pokemon:
-            print(f"Você encontrou um {pokemon} na caverna!\n{pokemon_img}")
-            if pokemon not in Pokemons_Pokedex:
-                capturar = input("Você deseja tentar capturar este Pokémon? (sim/não) ").lower()
-                if capturar == "sim":
-                    probabilidade_captura = 0.35  # Probabilidade de captura na caverna
-                    if random.random() <= probabilidade_captura:
-                        print(f"Parabéns! Você capturou o {pokemon}! Ele foi adicionado a sua pokedex!")
-                        Pokemons_Pokedex.extend(pokemon)
-                    else:
-                        print(f"Oops! Você não conseguiu capturar o {pokemon}.")
-                        tentativas_extra -= 1
-                        if tentativas_extra <= 0:
-                            print("Você usou todas as suas tentativas extras de captura.")
-                            continue
-                        tentar_novamente = input("Você deseja tentar capturar novamente? (sim/não) ").lower()
-                        if tentar_novamente == "não":
-                            continue
-                else:
-                    print("Você decidiu não capturar o Pokémon.")
 
-                
-#matagal 
-    elif escolha == "matagal":
-        if escolha == "sair":
-            print("Obrigado por jogar! Até a próxima!")
-            break
-        pokemon_dataCa = random.choice(list(zip(pokemonsCa, pokeimgCa)))
-        pokemon, pokemon_img = pokemon_dataCa
-        if pokemon in Pokemons_Pokedex :
-            print("Você já capturou este Pokémon antes!")
-            pokedex = input("Você deseja visualizar seus Pokemóns capturados?").lower()
-            if pokedex == "sim" :
-                print(Pokemons_Pokedex)
-                continue
+        if pokemon is not None:
+            if pokemon not in Pokemons_Pokedex:
+                print(f"Você encontrou um {pokemon} na caverna!\n{pokemon_img}")
+                capturar = input("Você deseja tentar capturar este Pokémon? (sim/não) ").lower()
+                if capturar == "sim":
+                    probabilidade_captura = 0.75  # Probabilidade de captura na caverna
+                    if random.random() <= probabilidade_captura:
+                        print(f"Parabéns! Você conseguiu capturar o {pokemon}! Ele foi adicionado à sua Pokédex!")
+                        Pokemons_Pokedex.append(pokemon)
+                    else:
+                        tentativas_extra -= 1
+                        print(f"Oops! Você não conseguiu capturar o {pokemon}. Tentativas restantes: {tentativas_extra}")
             else:
-                continue
-        if pokemon:
-            print(f"Você encontrou um {pokemon} na caverna!\n{pokemon_img}")
+                print(f"Você já capturou um {pokemon}.")
+        else:
+            print("Você não encontrou nenhum Pokémon na caverna desta vez.")
+
+    elif escolha == "matagal":
+        print("Você entrou no matagal...")
+        pokemon_dataMa = random.choice(list(zip(pokemonsMa, pokeimgMa)))
+        pokemon, pokemon_img = pokemon_dataMa
+        
+        if random.randint(1, 2) == 1:
+            print(f"Você encontrou um {pokemon} no matagal!\n{pokemon_img}")
             if pokemon not in Pokemons_Pokedex:
                 capturar = input("Você deseja tentar capturar este Pokémon? (sim/não) ").lower()
                 if capturar == "sim":
-                    probabilidade_captura = 0.5 # Probabilidade de captura na caverna
+                    probabilidade_captura = 0.6  # Probabilidade de captura no matagal
                     if random.random() <= probabilidade_captura:
                         print(f"Parabéns! Você capturou o {pokemon}!")
-                        Pokemons_Pokedex.extend(pokemon)
+                        Pokemons_Pokedex.append(pokemon)
                     else:
-                        print(f"Oops! Você não conseguiu capturar o {pokemon} :( .")
-                        tentativas_extra -= 1
-                        if tentativas_extra <= 0:
+                        if tentativas_extra > 0:
+                            tentativas_extra -= 1
+                            print(f"Oops! Você não conseguiu capturar o {pokemon}. Tentativas restantes: {tentativas_extra}")
+                        else:
                             print("Você usou todas as suas tentativas extras de captura.")
-                            continue
-                        tentar_novamente = input("Você deseja tentar capturar novamente? (sim/não) ").lower()
-                        if tentar_novamente == "não":
-                            continue
-                else:
-                    print("Você decidiu não capturar o Pokémon.")
+            else:
+                print(f"Você já capturou um {pokemon}.")
+        else:
+            print("Você não encontrou nenhum Pokémon no matagal desta vez.")
+
+    elif escolha == "pokedex":
+        if Pokemons_Pokedex:
+            print("Pokédex:")
+            for poke in Pokemons_Pokedex:
+                print(f"- {poke}")
+        else:
+            print("Sua Pokédex está vazia!")
+
+    elif escolha == "sair":
+        print("Obrigado por jogar! Até a próxima!")
+        break
+
+    else:
+        print("Escolha inválida. Tente novamente.")
